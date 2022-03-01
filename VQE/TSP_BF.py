@@ -14,20 +14,24 @@ from qiskit.utils import algorithm_globals, QuantumInstance
 from qiskit_optimization.algorithms import MinimumEigenOptimizer
 from qiskit_optimization.problems import QuadraticProgram
 #################################################2
-def draw_graph(G, colors, pos):
-    default_axes = plt.axes(frameon=True)
-    nx.draw_networkx(G, node_color=colors, node_size=600, alpha=0.8, ax=default_axes, pos=pos)
+def draw_graph(G, colors, pos): #draws undirected graph
+    default_axes = plt.axes(frameon=True) #Whether the Axes frame is visible.
+    nx.draw_networkx(G, node_color=colors, node_size=600, alpha=0.8, ax=default_axes, pos=pos) #draws graph
+    print(nx.draw_networkx(G, node_color=colors, node_size=600, alpha=0.8, ax=default_axes, pos=pos))
     edge_labels = nx.get_edge_attributes(G, "weight")
-    nx.draw_networkx_edge_labels(G, pos=pos, edge_labels=edge_labels)
+    print(edge_labels,"$$$")
+    nx.draw_networkx_edge_labels(G, pos=pos, edge_labels=edge_labels) #adds edges
+    #Edge labels in a dictionary keyed by edge two-tuple of text labels (default=None). Only labels for the keys in the dictionary are drawn.
 ###########################1
 n = 3
-num_qubits = n ** 2
-tsp = Tsp.create_random_instance(n, seed=123)
+tsp = Tsp.create_random_instance(n, seed=124) #Seed helps determine weight of edges between nodes
+print(tsp.graph,"HERE1")
 adj_matrix = nx.to_numpy_matrix(tsp.graph)
 print("distance\n", adj_matrix)
 
-colors = ["r" for node in tsp.graph.nodes]
-pos = [tsp.graph.nodes[node]["pos"] for node in tsp.graph.nodes]
+colors = ["r" for node in tsp.graph.nodes] #color of nodes
+pos = [tsp.graph.nodes[node]["pos"] for node in tsp.graph.nodes] #A dictionary with nodes as keys and positions as values. Positions should be sequences of length 2.
+print(pos,"@@ ",colors)
 draw_graph(tsp.graph, colors, pos)
 #####################################4
 
@@ -35,17 +39,22 @@ draw_graph(tsp.graph, colors, pos)
 from itertools import permutations
 
 
-def brute_force_tsp(w, N):
-    a = list(permutations(range(1, N)))
+def brute_force_tsp(w, N): #w is adj matrix and N is no of nodes
+    a = list(permutations(range(1, N)))  #(1,2) adn (2,1)
     last_best_distance = 1e10
     for i in a:
+        print(i," i value")
         distance = 0
-        pre_j = 0
+        pre_j = 0 #ex. i =(1,0)--> j=1 then j = 0
         for j in i:
+            print(j, " j value")
             distance = distance + w[j, pre_j]
+            print(distance," ABCD")
             pre_j = j
         distance = distance + w[pre_j, 0]
-        order = (0,) + i
+        print(distance," EFGH")
+        order = (0,) + i #order of nodes travlled
+        print(order," order")
         if distance < last_best_distance:
             best_order = order
             last_best_distance = distance
@@ -62,7 +71,7 @@ print(
 )
 ###################5
 
-def draw_tsp_solution(G, order, colors, pos):
+def draw_tsp_solution(G, order, colors, pos):  #draws graph with arrows!
     G2 = nx.DiGraph()
     G2.add_nodes_from(G)
     n = len(order)
