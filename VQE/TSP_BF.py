@@ -13,13 +13,13 @@ from qiskit.algorithms.optimizers import SPSA
 from qiskit.utils import algorithm_globals, QuantumInstance
 from qiskit_optimization.algorithms import MinimumEigenOptimizer
 from qiskit_optimization.problems import QuadraticProgram
-
+#################################################2
 def draw_graph(G, colors, pos):
     default_axes = plt.axes(frameon=True)
     nx.draw_networkx(G, node_color=colors, node_size=600, alpha=0.8, ax=default_axes, pos=pos)
     edge_labels = nx.get_edge_attributes(G, "weight")
     nx.draw_networkx_edge_labels(G, pos=pos, edge_labels=edge_labels)
-###########################
+###########################1
 n = 3
 num_qubits = n ** 2
 tsp = Tsp.create_random_instance(n, seed=123)
@@ -29,7 +29,7 @@ print("distance\n", adj_matrix)
 colors = ["r" for node in tsp.graph.nodes]
 pos = [tsp.graph.nodes[node]["pos"] for node in tsp.graph.nodes]
 draw_graph(tsp.graph, colors, pos)
-#####################################
+#####################################4
 
 
 from itertools import permutations
@@ -51,7 +51,7 @@ def brute_force_tsp(w, N):
             last_best_distance = distance
             print("order = " + str(order) + " Distance = " + str(distance))
     return last_best_distance, best_order
-
+############3
 
 best_distance, best_order = brute_force_tsp(adj_matrix, n)
 print(
@@ -60,7 +60,7 @@ print(
     + " with total distance = "
     + str(best_distance)
 )
-###################
+###################5
 
 def draw_tsp_solution(G, order, colors, pos):
     G2 = nx.DiGraph()
